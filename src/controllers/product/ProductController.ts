@@ -5,15 +5,13 @@ import { productDb } from "../../modelDB/Products";
 class ProductController {
   public static async get(req: Request, res: Response) {
     try {
-      const allProducts = await productDb.find();
       const allCategories = await categoryDb.find();
-
-      const concat = allCategories.map((category) => {
-        console.log("category", category);
-      });
-
-      
-      // res.status(200).json(concat);
+     
+      allCategories.map(async(category)=>{
+        const product = await productDb.find({categoria_id:category._id.toString()});
+        console.log(product)
+      }) 
+    
     } catch (error) {
       console.log(error);
     }

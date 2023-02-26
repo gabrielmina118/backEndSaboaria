@@ -9,7 +9,7 @@ const productSchema = new mongoose.Schema({
   ingredientes: { type: String },
   descricao: { type: String },
   tamanho: { type: String },
-  categoria_id: { type: mongoose.Schema.Types.ObjectId, ref:"categories" , required: true },
+  categoria_id: { type: String },
 });
 
 export const productDb = mongoose.model("products", productSchema);
