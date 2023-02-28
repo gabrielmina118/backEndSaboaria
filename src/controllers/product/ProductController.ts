@@ -39,6 +39,17 @@ class ProductController {
       }
     }
   }
+  public static async getAll(req: Request, res: Response) {
+    try {
+      const allProducts = await productDb.find();
+
+      res.send(allProducts);
+    } catch (error) {
+      if (error instanceof BaseError) {
+        res.status(error.statusCode).send({ message: error.message });
+      }
+    }
+  }
   public static async getById(req: Request, res: Response) {
     try {
       const id = req.params.id;
