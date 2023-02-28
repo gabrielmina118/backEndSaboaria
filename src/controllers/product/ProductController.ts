@@ -1,16 +1,21 @@
 import { Request, Response } from "express";
+import BaseError from "../../error/BaseError";
 import { categoryDb } from "../../modelDB/Category";
 import { productDb } from "../../modelDB/Products";
-import { ICategories ,Products} from "./interface/ICategories";
+import { ICategories, Product } from "./interface/ICategories";
 
 class ProductController {
   public static async get(req: Request, res: Response) {
     try {
       const allCategories = await categoryDb.find();
       const allProducts = await productDb.find();
-      
+
       const allcategoriesObject: Record<string, ICategories> = {
-        semCategoria: { _id: undefined, nome: "produtoSemCategoria", produtos: [] },
+        semCategoria: {
+          _id: undefined,
+          nome: "produtoSemCategoria",
+          produtos: [],
+        },
       };
 
       allCategories.map((category) => {
@@ -21,13 +26,29 @@ class ProductController {
         };
       });
 
-      allProducts.forEach(function (product) {
-        allcategoriesObject[product.categoria_id || "semCategoria"].produtos.push(product._doc);
+      allProducts.forEach(function (product: Product) {
+        allcategoriesObject[
+          product.categoria_id || "semCategoria"
+        ].produtos.push(product);
       });
 
-      res.send(Object.values(allcategoriesObject))
+      res.send(Object.values(allcategoriesObject));
     } catch (error) {
-      console.log(error);
+      if (error instanceof BaseError) {
+        res.status(error.statusCode).send({ message: error.message });
+      }
+    }
+  }
+  public static async getById(req: Request, res: Response) {
+    try {
+      const id = req.params.id;
+      const productId = await productDb.findOne({ _id: id });
+
+      res.status(200).send(productId);
+    } catch (error) {
+      if (error instanceof BaseError) {
+        res.status(error.statusCode).send({ message: error.message });
+      }
     }
   }
 }

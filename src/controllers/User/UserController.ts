@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import BaseError from "../../error/BaseError";
 import User from "../../model/User";
+import { adressDB } from "../../modelDB/Adress";
 import { userDb } from "../../modelDB/User";
 import Authenticator from "../../service/Authenticator";
 import { HashManager } from "../../service/HashManager";
@@ -11,6 +12,42 @@ class UserController {
     try {
       const allUsers = await userDb.find();
       res.status(200).send(allUsers);
+    } catch (error) {
+      if (error instanceof BaseError) {
+        res.status(error.statusCode).send({ message: error.message });
+      }
+    }
+  }
+  public static async getUserById(req: Request, res: Response) {
+    try {
+      const id = req.user.id;
+      
+      const [adressResult] = await adressDB.find({ id_user: id });
+      const [userResult] = await userDb.find({ id_user: id });
+ 
+      if (!userResult) {
+        throw new Error("User not found ");
+      }
+
+      if (!adressResult) {
+        throw new Error("Adress not found ");
+      }
+
+      const outPutDTO = {
+        name: userResult.name,
+        email: userResult.email,
+        cpf: userResult.cpf,
+        adress: {
+          street: adressResult.street,
+          complement: adressResult.complement,
+          neighbourhood: adressResult.neighbourhood,
+          number: adressResult.number,
+          city: adressResult.city,
+          state: adressResult.state,
+        },
+      };
+      
+      res.status(200).send(outPutDTO);
     } catch (error) {
       if (error instanceof BaseError) {
         res.status(error.statusCode).send({ message: error.message });
