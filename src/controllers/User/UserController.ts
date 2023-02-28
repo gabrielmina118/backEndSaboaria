@@ -21,10 +21,10 @@ class UserController {
   public static async getUserById(req: Request, res: Response) {
     try {
       const id = req.user.id;
-      
-      const [adressResult] = await adressDB.find({ id_user: id });
-      const [userResult] = await userDb.find({ id_user: id });
- 
+
+      const adressResult = await adressDB.findOne({ id_user: id });
+      const userResult = await userDb.findOne({ _id: id });
+
       if (!userResult) {
         throw new Error("User not found ");
       }
@@ -46,7 +46,7 @@ class UserController {
           state: adressResult.state,
         },
       };
-      
+
       res.status(200).send(outPutDTO);
     } catch (error) {
       if (error instanceof BaseError) {
@@ -123,7 +123,7 @@ class UserController {
       userInput.cpf,
       hashPassword
     );
-    
+
     // cria o modelo do mongo
     let userMongoDB = new userDb(user);
 
