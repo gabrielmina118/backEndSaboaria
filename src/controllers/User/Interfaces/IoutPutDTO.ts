@@ -1,7 +1,14 @@
+export interface IOutPutAdress{
+  street:String| undefined;
+  complement: String| undefined;
+  neighbourhood: String| undefined;
+  number: Number| undefined;
+  city:String| undefined;
+  state: String| undefined;
+}
 export interface IoutPutDTO {
-  id: string;
-  name: string;
-  email: string;
-  cpf:string;
-  hasAdress:Boolean
+  name:String | undefined;
+  email: String| undefined;
+  cpf: String| undefined;
+  adress:IOutPutAdress;
 }

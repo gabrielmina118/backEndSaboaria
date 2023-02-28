@@ -6,6 +6,7 @@ import { userDb } from "../../modelDB/User";
 import Authenticator from "../../service/Authenticator";
 import { HashManager } from "../../service/HashManager";
 import { ICreateUser } from "./Interfaces/ICreateUser";
+import { IoutPutDTO } from "./Interfaces/IoutPutDTO";
 
 class UserController {
   public static async allUsers(req: Request, res: Response) {
@@ -24,26 +25,26 @@ class UserController {
 
       const adressResult = await adressDB.findOne({ id_user: id });
       const userResult = await userDb.findOne({ _id: id });
-
+      
       if (!userResult) {
-        throw new Error("User not found ");
+        throw new BaseError("Usuário não encontrado ");
       }
 
       if (!adressResult) {
-        throw new Error("Adress not found ");
+        throw new BaseError("Não há endereço cadastrado",404);
       }
 
-      const outPutDTO = {
+      const outPutDTO:IoutPutDTO = {
         name: userResult.name,
         email: userResult.email,
         cpf: userResult.cpf,
         adress: {
-          street: adressResult.street,
-          complement: adressResult.complement,
-          neighbourhood: adressResult.neighbourhood,
-          number: adressResult.number,
-          city: adressResult.city,
-          state: adressResult.state,
+          street: adressResult!.street ,
+          complement: adressResult!.complement,
+          neighbourhood: adressResult!.neighbourhood,
+          number: adressResult!.number,
+          city: adressResult!.city,
+          state: adressResult!.state,
         },
       };
 

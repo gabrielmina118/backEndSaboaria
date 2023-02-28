@@ -7,7 +7,6 @@ import { IoutPutDTO } from "../User/Interfaces/IoutPutDTO";
 import { IcreateAdress } from "./interface/IcreateAdress";
 
 class AdressControler {
-  
   static async create(req: Request, res: Response) {
     try {
       const { street, complement, neighbourhood, number, city, state } =
@@ -41,6 +40,10 @@ class AdressControler {
       );
 
       let adressMongoDB = new adressDB(adress);
+
+      await userDb.findByIdAndUpdate(id, {
+        hasAdress: true,
+      });
 
       adressMongoDB.save((err: any) => {
         if (err) {
