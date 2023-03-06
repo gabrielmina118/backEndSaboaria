@@ -19,12 +19,7 @@ app.use(cors());
 
 routes(app)
 
-app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
-  if (error instanceof BaseError) {
-    return res.status(error.statusCode).json({ message: error.message });
-  }
-  return res.status(500).send({ message: error.message });
-});
+
 
 app.listen(port, () => {
   console.log(`Server is running in port ${port}`);
