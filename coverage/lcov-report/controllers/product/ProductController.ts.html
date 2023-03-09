@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">7.4% </span>
+                <span class="strong">7.54% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>4/54</span>
+                <span class='fraction'>4/53</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">5% </span>
+                <span class="strong">5.55% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>1/20</span>
+                <span class='fraction'>1/18</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">11.11% </span>
+                <span class="strong">12.5% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/9</span>
+                <span class='fraction'>1/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">7.4% </span>
+                <span class="strong">7.54% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>4/54</span>
+                <span class='fraction'>4/53</span>
             </div>
         
             
@@ -191,27 +191,37 @@
 <a name='L126'></a><a href='#L126'>126</a>
 <a name='L127'></a><a href='#L127'>127</a>
 <a name='L128'></a><a href='#L128'>128</a>
-<a name='L129'></a><a href='#L129'>129</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L129'></a><a href='#L129'>129</a>
+<a name='L130'></a><a href='#L130'>130</a>
+<a name='L131'></a><a href='#L131'>131</a>
+<a name='L132'></a><a href='#L132'>132</a>
+<a name='L133'></a><a href='#L133'>133</a>
+<a name='L134'></a><a href='#L134'>134</a>
+<a name='L135'></a><a href='#L135'>135</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -307,6 +317,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -320,24 +332,28 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Request, Response } from "express";
+import ProductBussines from "../../bussines/Produtct/ProductBussines";
 import BaseError from "../../error/BaseError";
 import { categoryDb } from "../../modelDB/Category";
 import { essenceDb } from "../../modelDB/Essence";
 import { productDb } from "../../modelDB/Products";
 import { ICategories, Product } from "./interface/ICategories";
+import { IEssence } from "./interface/IEssence";
 &nbsp;
 class ProductController {
   public static async create(req: Request, res: Response) {
     try {
-      let essence = new essenceDb(req.body);
+      const { nome } = req.body;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      essence.save(<span class="fstat-no" title="function not covered" >(e</span>rr: any) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >        if (err) {</span>
-<span class="cstat-no" title="statement not covered" >          res.status(500).send({ message: err.message });</span>
-        } else {
-<span class="cstat-no" title="statement not covered" >          res.status(201).send("Cadastrado com sucesso");</span>
-        }
-      });
+      const input: IEssence = <span class="cstat-no" title="statement not covered" >{</span>
+        nome,
+      };
+&nbsp;
+      const createEssence = <span class="cstat-no" title="statement not covered" >await ProductBussines.create(input);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      res</span>
+        .status(201)
+        .send({ message: "Cadastrado com sucesso", createEssence });
     } catch (error: any) {
       <span class="missing-if-branch" title="if path not taken" >I</span>if (error instanceof BaseError) {
 <span class="cstat-no" title="statement not covered" >        return res.status(error.statusCode).send({ message: error.message });</span>
@@ -430,13 +446,15 @@ class ProductController {
       const id = <span class="cstat-no" title="statement not covered" >req.params.id;</span>
       const productId = <span class="cstat-no" title="statement not covered" >await productDb.findOne({ _id: id });</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if(!productId){</span>
-<span class="cstat-no" title="statement not covered" >        throw new BaseError("Produto não encontrado",404)</span>
+<span class="cstat-no" title="statement not covered" >      if (!productId) {</span>
+<span class="cstat-no" title="statement not covered" >        throw new BaseError("Produto não encontrado", 404);</span>
       }
 &nbsp;
-      const productRelative = <span class="cstat-no" title="statement not covered" >await productDb.find({categoria_id:productId.categoria_id})</span>
-   
-<span class="cstat-no" title="statement not covered" >      res.status(200).send({productId,productRelative});</span>
+      const productRelative = <span class="cstat-no" title="statement not covered" >await productDb.find({</span>
+        categoria_id: productId.categoria_id,
+      });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      res.status(200).send({ productId, productRelative });</span>
     } catch (error: any) {
 <span class="cstat-no" title="statement not covered" >      if (error instanceof BaseError) {</span>
 <span class="cstat-no" title="statement not covered" >        return res.status(error.statusCode).send({ message: error.message });</span>
@@ -454,7 +472,7 @@ export default ProductController;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-03-09T14:05:19.846Z
+                at 2023-03-09T14:42:05.786Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

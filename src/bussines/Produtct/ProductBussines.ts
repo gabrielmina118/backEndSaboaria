@@ -10,7 +10,7 @@ class ProductBussines {
   public static async create(input: IEssence) {
 
     if (!input.nome) {
-      throw new BaseError("Essencia não informada", 404);
+      throw new Error("Essencia não informada");
     }
 
     let essence: IEssenceDataBase = new essenceDb(input);

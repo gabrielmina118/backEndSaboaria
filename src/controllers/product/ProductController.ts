@@ -67,7 +67,7 @@ class ProductController {
   public static async getAll(req: Request, res: Response) {
     try {
       const { page } = req.query;
-      let limit = 4;
+      let limit = 12;
 
       if (!page) {
         limit = 0;

@@ -4,7 +4,7 @@ class ProductData {
       if (err) {
         return err.message;
       } else {
-        return "Cadastrado com sucesso";
+        return {message:"Cadastrado com sucesso"};
       }
     });
   }

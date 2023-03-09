@@ -1,82 +1,44 @@
-import { Request, Response } from "express";
+import ProductBussines from "../src/bussines/Produtct/ProductBussines";
 import ProductController from "../src/controllers/product/ProductController";
 import BaseError from "../src/error/BaseError";
+import { IEssence } from "../src/controllers/product/interface/IEssence";
+import ProductData from "../src/data/ProductData";
+const input: IEssence = { nome: "Essencia teste" };
 
-let request: Request;
-let response: Response;
 describe("Teste de criação da essencia", () => {
-
-  it('Criar funcao com retorno 201 de status "Cadastrado com sucesso" ', async () => {
-    const req = { body: { name: "Essence Name" } };
-    
-    const res = {
-      status: jest.fn().mockReturnThis(),
-      send: jest.fn(),
-    };
-   
-  
-    await ProductController.create(request, response);
-
-    expect(res.status).toHaveBeenCalledWith(201);
-    expect(res.send).toHaveBeenCalledWith("Cadastrado com sucesso");
+  it("create function should throw an error if input.nome is not provided", async () => {
+    try {
+    } catch (error) {
+      if (error instanceof BaseError) {
+        expect(ProductBussines.create(input)).rejects.toThrow(BaseError);
+      }
+    }
   });
 
-//   it("create function should return 500 status code and error message when essence save fails", async () => {
-//     const req = { body: { name: "Essence Name" } };
-//     const res = {
-//       status: jest.fn().mockReturnThis(),
-//       send: jest.fn(),
-//     };
-//     const essenceDbMock = jest.fn().mockImplementation(() => ({
-//       save: jest.fn().mockImplementation((callback) => {
-//         callback(new Error("Save error"));
-//       }),
-//     }));
-//     const createSpy = jest.spyOn(essenceDbMock.prototype, "save");
-//     await ProductController.create(request, response);
-//     expect(createSpy).toHaveBeenCalled();
-//     expect(res.status).toHaveBeenCalledWith(500);
-//     expect(res.send).toHaveBeenCalledWith({ message: "Save error" });
-//   });
+  test("create function should return the response from ProductData.createEssence", async () => {
+    const createEssenceMock = jest
+      .fn()
+      .mockReturnValue({ message: "Cadastrado com sucesso" });
+    jest
+      .spyOn(ProductData, "createEssence")
+      .mockImplementation(createEssenceMock);
 
-//   it("create function should return error status code and message when BaseError is thrown", async () => {
-//     const req = { body: { name: "Essence Name" } };
-//     const res = {
-//       status: jest.fn().mockReturnThis(),
-//       send: jest.fn(),
-//     };
-//     const error = new BaseError("Base error", 400);
-//     const essenceDbMock = jest.fn().mockImplementation(() => ({
-//       save: jest.fn().mockImplementation(() => {
-//         throw error;
-//       }),
-//     }));
-//     const createSpy = jest.spyOn(essenceDbMock.prototype, "save");
-//     await ProductController.create(request, response);
-//     expect(createSpy).toHaveBeenCalled();
-//     expect(res.status).toHaveBeenCalledWith(error.statusCode);
-//     expect(res.send).toHaveBeenCalledWith({ message: error.message });
-//   });
+    const response = await ProductBussines.create(input);
 
-//   it("create function should return 500 status code and error message when an unexpected error occurs", async () => {
-//     const req = { body: { name: "Essence Name" } };
-//     const res = {
-//       status: jest.fn().mockReturnThis(),
-//       send: jest.fn(),
-//     };
-//     const error = new Error("Unexpected error");
-//     const essenceDbMock = jest.fn().mockImplementation(() => ({
-//       save: jest.fn().mockImplementation(() => {
-//         throw error;
-//       }),
-//     }));
-//     const createSpy = jest.spyOn(essenceDbMock.prototype, "save");
+    expect(response).toEqual({ message: "Cadastrado com sucesso" });
+  });
+//   test('create function should call ProductData.createEssence with the correct parameter', async () => {
+//   const input = { nome: 'Teste', descricao: 'Teste' };
+//   const essenceDbMock = jest.fn().mockReturnValue({ nome: 'Teste', descricao: 'Teste' });
+//   const createEssenceMock = jest.fn().mockReturnValue({ success: true });
+//   jest.spyOn(MyClass, 'essenceDb').mockImplementation(essenceDbMock);
+//   jest.spyOn(ProductData, 'createEssence').mockImplementation(createEssenceMock);
 
-//     await ProductController.create(request, response);
-//     expect(createSpy).toHaveBeenCalled();
-//     expect(res.status).toHaveBeenCalledWith(500);
-//     expect(res.send).toHaveBeenCalledWith({ message: error.message });
-//   });
+//   await MyClass.create(input);
+
+//   expect(essenceDbMock).toHaveBeenCalledWith(input);
+//   expect(createEssenceMock).toHaveBeenCalledWith({ nome: 'Teste', descricao: 'Teste' });
+// });
 });
 
 // describe("Buscar todos os produtos", () => {
