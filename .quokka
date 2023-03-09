@@ -1,0 +1,7 @@
+{
+  "stdEsm": false,
+  "nativeEsm": true,
+  "babel": {
+    "ts": true
+  }
+}

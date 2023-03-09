@@ -7,7 +7,8 @@
     "start": "tsc && node ./build/index.js",
     "tsc": "tsc",
     "dev": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules src/index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watchAll",
+    "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watchAll --coverage"
   },
   "keywords": [],
   "author": "",
@@ -25,10 +26,13 @@
     "vercel": "^28.16.7"
   },
   "devDependencies": {
+    "@babel/preset-typescript": "^7.21.0",
     "@types/bcrypt": "^5.0.0",
     "@types/cors": "^2.8.13",
     "@types/express": "^4.17.17",
+    "@types/jest": "^29.4.0",
     "@types/jsonwebtoken": "^9.0.1",
-    "@types/uuid": "^8.3.4"
+    "@types/uuid": "^8.3.4",
+    "jest": "^28.1.0"
   }
 }
