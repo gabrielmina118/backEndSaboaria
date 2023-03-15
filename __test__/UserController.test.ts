@@ -3,7 +3,18 @@ import ProductController from "../src/controllers/product/ProductController";
 import BaseError from "../src/error/BaseError";
 import { IEssence } from "../src/controllers/product/interface/IEssence";
 import ProductData from "../src/data/ProductData";
+import { app } from "../src";
+
 const input: IEssence = { nome: "Essencia teste" };
+
+let server: any;
+beforeEach(() => {
+  const port = 3000;
+  server = app.listen(port);
+});
+afterEach(() => {
+  server.close();
+});
 
 describe("Teste de criação da essencia", () => {
   it("create function should throw an error if input.nome is not provided", async () => {
@@ -27,18 +38,15 @@ describe("Teste de criação da essencia", () => {
 
     expect(response).toEqual({ message: "Cadastrado com sucesso" });
   });
-//   test('create function should call ProductData.createEssence with the correct parameter', async () => {
-//   const input = { nome: 'Teste', descricao: 'Teste' };
-//   const essenceDbMock = jest.fn().mockReturnValue({ nome: 'Teste', descricao: 'Teste' });
-//   const createEssenceMock = jest.fn().mockReturnValue({ success: true });
-//   jest.spyOn(MyClass, 'essenceDb').mockImplementation(essenceDbMock);
-//   jest.spyOn(ProductData, 'createEssence').mockImplementation(createEssenceMock);
-
-//   await MyClass.create(input);
-
-//   expect(essenceDbMock).toHaveBeenCalledWith(input);
-//   expect(createEssenceMock).toHaveBeenCalledWith({ nome: 'Teste', descricao: 'Teste' });
-// });
+  test("create function should call ProductData.createEssence with the correct parameter", async () => {
+    const input = { nome: "Teste", descricao: "Teste" };
+    const essenceDbMock = jest
+      .fn()
+      .mockReturnValue({ nome: "Teste", descricao: "Teste" });
+   
+    expect(essenceDbMock).toHaveBeenCalledWith(input);
+    
+  });
 });
 
 // describe("Buscar todos os produtos", () => {

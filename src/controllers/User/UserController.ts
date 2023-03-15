@@ -62,7 +62,7 @@ class UserController {
 
       Object.keys(req.body).forEach(function (value) {
         if (!req.body[value]) {
-          throw new BaseError(`The proprety '${value}' is missing`, 404);
+          throw new BaseError(`A propriedade '${value}' esta faltando`, 404);
         }
       });
 
@@ -112,7 +112,7 @@ class UserController {
 
     Object.keys(req.body).forEach(function (value) {
       if (!req.body[value]) {
-        throw new BaseError(`The proprety '${value}' is missing`, 404);
+        throw new BaseError(`A propriedade '${value}' esta faltando`, 404);
       }
     });
 
@@ -142,7 +142,7 @@ class UserController {
         res.status(500).send({ message: err.message });
       } else {
         res.status(201).send({
-          message: "successfully registered user",
+          message: "Usuário cadastrado com sucesso !",
           user: outPutDTO,
           token,
         });

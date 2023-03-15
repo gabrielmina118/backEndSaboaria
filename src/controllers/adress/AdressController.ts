@@ -15,7 +15,7 @@ class AdressControler {
 
       Object.keys(req.body).forEach(function (value) {
         if (!req.body[value]) {
-          throw new BaseError(`The proprety '${value}' is missing`, 404);
+          throw new BaseError(`O valor '${value}' esta faltando`, 404);
         }
       });
 
@@ -50,7 +50,7 @@ class AdressControler {
           res.status(500).send({ message: err.message });
         } else {
           res.status(201).send({
-            message: "successfully registered adress",
+            message: "Endereço cadastrado com sucesso!",
           });
         }
       });
