@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const BaseError_1 = __importDefault(require("../../error/BaseError"));
 const User_1 = __importDefault(require("../../model/User"));
+const Adress_1 = require("../../modelDB/Adress");
 const User_2 = require("../../modelDB/User");
 const Authenticator_1 = __importDefault(require("../../service/Authenticator"));
 const HashManager_1 = require("../../service/HashManager");
@@ -31,13 +32,47 @@ class UserController {
             }
         });
     }
+    static getUserById(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const id = req.user.id;
+                const adressResult = yield Adress_1.adressDB.findOne({ id_user: id });
+                const userResult = yield User_2.userDb.findOne({ _id: id });
+                if (!userResult) {
+                    throw new BaseError_1.default("Usuário não encontrado ");
+                }
+                if (!adressResult) {
+                    throw new BaseError_1.default("Não há endereço cadastrado", 404);
+                }
+                const outPutDTO = {
+                    name: userResult.name,
+                    email: userResult.email,
+                    cpf: userResult.cpf,
+                    adress: {
+                        street: adressResult.street,
+                        complement: adressResult.complement,
+                        neighbourhood: adressResult.neighbourhood,
+                        number: adressResult.number,
+                        city: adressResult.city,
+                        state: adressResult.state,
+                    },
+                };
+                res.status(200).send(outPutDTO);
+            }
+            catch (error) {
+                if (error instanceof BaseError_1.default) {
+                    res.status(error.statusCode).send({ message: error.message });
+                }
+            }
+        });
+    }
     static login(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { email, password } = req.body;
                 Object.keys(req.body).forEach(function (value) {
                     if (!req.body[value]) {
-                        throw new BaseError_1.default(`The proprety '${value}' is missing`, 404);
+                        throw new BaseError_1.default(`A propriedade '${value}' esta faltando`, 404);
                     }
                 });
                 const [emailAlreadExist] = yield User_2.userDb.find({ email });
@@ -76,7 +111,7 @@ class UserController {
             };
             Object.keys(req.body).forEach(function (value) {
                 if (!req.body[value]) {
-                    throw new BaseError_1.default(`The proprety '${value}' is missing`, 404);
+                    throw new BaseError_1.default(`A propriedade '${value}' esta faltando`, 404);
                 }
             });
             const hashPassword = yield HashManager_1.HashManager.HashCreate(userInput.password);
@@ -96,7 +131,7 @@ class UserController {
                 }
                 else {
                     res.status(201).send({
-                        message: "successfully registered user",
+                        message: "Usuário cadastrado com sucesso !",
                         user: outPutDTO,
                         token,
                     });

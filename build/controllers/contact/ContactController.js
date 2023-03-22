@@ -13,51 +13,41 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const BaseError_1 = __importDefault(require("../../error/BaseError"));
-const Adress_1 = __importDefault(require("../../model/Adress"));
-const Adress_2 = require("../../modelDB/Adress");
-const User_1 = require("../../modelDB/User");
-class AdressControler {
+const Contact_1 = require("../../modelDB/Contact");
+class ContactController {
     static create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { street, complement, neighbourhood, number, city, state } = req.body;
-                const id = req.user.id;
+                const { name, email, text } = req.body;
                 Object.keys(req.body).forEach(function (value) {
                     if (!req.body[value]) {
-                        throw new BaseError_1.default(`O valor '${value}' esta faltando`, 404);
+                        throw new BaseError_1.default(`O valor de '${value}' esta faltando`, 404);
                     }
                 });
                 const inputDTO = {
-                    id_user: id,
-                    street,
-                    complement,
-                    neighbourhood,
-                    number,
-                    city,
-                    state,
+                    nome: name,
+                    email,
+                    texto: text,
                 };
-                const adress = new Adress_1.default(id, inputDTO.street, inputDTO.complement, inputDTO.neighbourhood, inputDTO.number, inputDTO.city, inputDTO.state);
-                let adressMongoDB = new Adress_2.adressDB(adress);
-                yield User_1.userDb.findByIdAndUpdate(id, {
-                    hasAdress: true,
-                });
-                adressMongoDB.save((err) => {
+                let contactMongoDb = new Contact_1.contactDb(inputDTO);
+                contactMongoDb.save((err) => {
                     if (err) {
                         res.status(500).send({ message: err.message });
                     }
                     else {
                         res.status(201).send({
-                            message: "Endereço cadastrado com sucesso!",
+                            message: `Mensagem enviada com sucesso , enviaremos um email em até 24hr para '${email}'`,
                         });
                     }
                 });
             }
             catch (error) {
                 if (error instanceof BaseError_1.default) {
-                    res.status(error.statusCode).send({ message: error.message });
+                    return res.status(error.statusCode).send({ message: error.message });
                 }
+                return res.status(500).send({ message: error.message });
             }
         });
     }
 }
-exports.default = AdressControler;
+exports.default = ContactController;

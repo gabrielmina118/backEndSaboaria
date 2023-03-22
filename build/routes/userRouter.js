@@ -11,3 +11,4 @@ exports.userRouter = (0, express_1.Router)();
 exports.userRouter.post("/user/create", UserController_1.default.createUser);
 exports.userRouter.post("/user/login", UserController_1.default.login);
 exports.userRouter.get("/user/all", isAuthenticated_1.default, UserController_1.default.allUsers);
+exports.userRouter.get("/user", isAuthenticated_1.default, UserController_1.default.getUserById);

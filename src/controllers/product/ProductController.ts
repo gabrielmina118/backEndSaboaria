@@ -164,6 +164,24 @@ class ProductController {
       return res.status(500).send({ message: error.message });
     }
   }
+
+  public static async getByName(req: Request, res: Response) {
+    try {
+      const {nome} = req.query;
+      const products = await productDb.find({ nome: {'$regex' : `^${nome}`, '$options' : 'i'} });
+
+      if (!products.length) {
+        throw new BaseError("Produto não encontrado", 404);
+      }
+
+      res.status(200).send(products);
+    } catch (error: any) {
+      if (error instanceof BaseError) {
+        return res.status(error.statusCode).send({ message: error.message });
+      }
+      return res.status(500).send({ message: error.message });
+    }
+  }
 }
 
 export default ProductController;

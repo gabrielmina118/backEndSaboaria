@@ -9,4 +9,3 @@ const AdressController_1 = __importDefault(require("../controllers/adress/Adress
 const isAuthenticated_1 = __importDefault(require("../middlewares/isAuthenticated"));
 exports.adressRouter = (0, express_1.Router)();
 exports.adressRouter.post("/adress/create", isAuthenticated_1.default, AdressController_1.default.create);
-exports.adressRouter.get("/adress/user", isAuthenticated_1.default, AdressController_1.default.getUser);
