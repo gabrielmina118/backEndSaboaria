@@ -1,13 +1,40 @@
 import { Request, Response } from "express";
+import IngredientsBussines from "../../bussines/Ingredients/IngredientsBussines";
 import ProductBussines from "../../bussines/Produtct/ProductBussines";
 import BaseError from "../../error/BaseError";
 import { categoryDb } from "../../modelDB/Category";
 import { essenceDb } from "../../modelDB/Essence";
+import { ingredientDb } from "../../modelDB/Ingredients";
 import { productDb } from "../../modelDB/Products";
 import { ICategories, Product } from "./interface/ICategories";
 import { IEssence } from "./interface/IEssence";
 
+interface DocumentResult<T> {
+  _doc: T;
+}
 class ProductController {
+  public static async createIngredients(req: Request, res: Response) {
+    try {
+      const { nome } = req.body;
+
+      const input = {
+        id: 1,
+        nome,
+      };
+
+      const createEssence = await IngredientsBussines.create(input);
+
+      res
+        .status(201)
+        .send({ message: "Cadastrado com sucesso", createEssence });
+    } catch (error: any) {
+      if (error instanceof BaseError) {
+        return res.status(error.statusCode).send({ message: error.message });
+      }
+      return res.status(500).send({ message: error.message });
+    }
+  }
+
   public static async create(req: Request, res: Response) {
     try {
       const { nome } = req.body;
@@ -121,7 +148,15 @@ class ProductController {
         categoria_id: productId.categoria_id,
       });
 
-      res.status(200).send({ productId, productRelative });
+      const ingredients = await ingredientDb.find({
+        id: productId.categoria_id,
+      });
+
+      const newProductId = { ...productId._doc, ingredients };
+
+      delete newProductId.ingredientes;
+
+      res.status(200).send({ newProductId, productRelative });
     } catch (error: any) {
       if (error instanceof BaseError) {
         return res.status(error.statusCode).send({ message: error.message });
