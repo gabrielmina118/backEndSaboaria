@@ -168,6 +168,11 @@ class ProductController {
   public static async getByName(req: Request, res: Response) {
     try {
       const {nome} = req.query;
+
+      if(!nome){
+        return res.status(200).send([]);
+      }
+      
       const products = await productDb.find({ nome: {'$regex' : `^${nome}`, '$options' : 'i'} });
 
       if (!products.length) {
