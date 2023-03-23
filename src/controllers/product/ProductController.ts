@@ -13,20 +13,19 @@ interface DocumentResult<T> {
   _doc: T;
 }
 class ProductController {
-  public static async createIngredients(req: Request, res: Response) {
+  public static async getAll(req: Request, res: Response) {
     try {
-      const { nome } = req.body;
+      const { page } = req.query;
+      let limit = 10;
 
-      const input = {
-        id: 1,
-        nome,
-      };
+      if (!page) {
+        limit = 0;
+      }
+      let skip = limit * (Number(page) - 1);
 
-      const createEssence = await IngredientsBussines.create(input);
+      const allProducts = await productDb.find().skip(skip).limit(limit);
 
-      res
-        .status(201)
-        .send({ message: "Cadastrado com sucesso", createEssence });
+      res.status(200).send(allProducts);
     } catch (error: any) {
       if (error instanceof BaseError) {
         return res.status(error.statusCode).send({ message: error.message });
@@ -35,19 +34,53 @@ class ProductController {
     }
   }
 
-  public static async create(req: Request, res: Response) {
+  public static async getById(req: Request, res: Response) {
     try {
-      const { nome } = req.body;
+      const id = req.params.id;
+      const productId = await productDb.findOne({ _id: id });
 
-      const input: IEssence = {
-        nome,
-      };
+      if (!productId) {
+        throw new BaseError("Produto não encontrado", 404);
+      }
 
-      const createEssence = await ProductBussines.create(input);
+      const productRelative = await productDb.find({
+        categoria_id: productId.categoria_id,
+      });
 
-      res
-        .status(201)
-        .send({ message: "Cadastrado com sucesso", createEssence });
+      const ingredients = await ingredientDb.find({
+        id: productId.categoria_id,
+      });
+
+      const newProductId = { ...productId._doc, ingredients };
+
+      delete newProductId.ingredientes;
+
+      res.status(200).send({ newProductId, productRelative });
+    } catch (error: any) {
+      if (error instanceof BaseError) {
+        return res.status(error.statusCode).send({ message: error.message });
+      }
+      return res.status(500).send({ message: error.message });
+    }
+  }
+
+  public static async getByName(req: Request, res: Response) {
+    try {
+      const { nome } = req.query;
+
+      if (!nome) {
+        return res.status(200).send([]);
+      }
+
+      const products = await productDb.find({
+        nome: { $regex: `^${nome}`, $options: "i" },
+      });
+
+      if (!products.length) {
+        throw new BaseError(`Produto com nome ${nome} não encontrado`, 404);
+      }
+
+      res.status(200).send(products);
     } catch (error: any) {
       if (error instanceof BaseError) {
         return res.status(error.statusCode).send({ message: error.message });
@@ -91,19 +124,41 @@ class ProductController {
       return res.status(500).send({ message: error.message });
     }
   }
-  public static async getAll(req: Request, res: Response) {
+  public static async createIngredients(req: Request, res: Response) {
     try {
-      const { page } = req.query;
-      let limit = 12;
+      const { nome } = req.body;
 
-      if (!page) {
-        limit = 0;
+      const input = {
+        id: 1,
+        nome,
+      };
+
+      const createEssence = await IngredientsBussines.create(input);
+
+      res
+        .status(201)
+        .send({ message: "Cadastrado com sucesso", createEssence });
+    } catch (error: any) {
+      if (error instanceof BaseError) {
+        return res.status(error.statusCode).send({ message: error.message });
       }
-      let skip = limit * (Number(page) - 1);
+      return res.status(500).send({ message: error.message });
+    }
+  }
 
-      const allProducts = await productDb.find().skip(skip).limit(limit);
+  public static async create(req: Request, res: Response) {
+    try {
+      const { nome } = req.body;
 
-      res.send(allProducts);
+      const input: IEssence = {
+        nome,
+      };
+
+      const createEssence = await ProductBussines.create(input);
+
+      res
+        .status(201)
+        .send({ message: "Cadastrado com sucesso", createEssence });
     } catch (error: any) {
       if (error instanceof BaseError) {
         return res.status(error.statusCode).send({ message: error.message });
@@ -127,59 +182,6 @@ class ProductController {
     try {
       const allEssences = await essenceDb.find();
       res.send(allEssences);
-    } catch (error: any) {
-      if (error instanceof BaseError) {
-        return res.status(error.statusCode).send({ message: error.message });
-      }
-      return res.status(500).send({ message: error.message });
-    }
-  }
-
-  public static async getById(req: Request, res: Response) {
-    try {
-      const id = req.params.id;
-      const productId = await productDb.findOne({ _id: id });
-
-      if (!productId) {
-        throw new BaseError("Produto não encontrado", 404);
-      }
-
-      const productRelative = await productDb.find({
-        categoria_id: productId.categoria_id,
-      });
-
-      const ingredients = await ingredientDb.find({
-        id: productId.categoria_id,
-      });
-
-      const newProductId = { ...productId._doc, ingredients };
-
-      delete newProductId.ingredientes;
-
-      res.status(200).send({ newProductId, productRelative });
-    } catch (error: any) {
-      if (error instanceof BaseError) {
-        return res.status(error.statusCode).send({ message: error.message });
-      }
-      return res.status(500).send({ message: error.message });
-    }
-  }
-
-  public static async getByName(req: Request, res: Response) {
-    try {
-      const {nome} = req.query;
-
-      if(!nome){
-        return res.status(200).send([]);
-      }
-      
-      const products = await productDb.find({ nome: {'$regex' : `^${nome}`, '$options' : 'i'} });
-
-      if (!products.length) {
-        throw new BaseError("Produto não encontrado", 404);
-      }
-
-      res.status(200).send(products);
     } catch (error: any) {
       if (error instanceof BaseError) {
         return res.status(error.statusCode).send({ message: error.message });
