@@ -12,5 +12,6 @@ exports.productRouter.get("/products", ProductController_1.default.getAll);
 exports.productRouter.get("/allCateories", ProductController_1.default.allCategories);
 exports.productRouter.get("/allEssences", ProductController_1.default.allEssences);
 exports.productRouter.get("/product/:id", ProductController_1.default.getById);
+exports.productRouter.get("/produtosNome", ProductController_1.default.getByName);
 exports.productRouter.post("/cria-essencia", ProductController_1.default.create);
 exports.productRouter.post("/cria-ingredientes", ProductController_1.default.createIngredients);

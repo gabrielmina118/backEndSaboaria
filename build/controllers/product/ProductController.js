@@ -20,18 +20,17 @@ const Essence_1 = require("../../modelDB/Essence");
 const Ingredients_1 = require("../../modelDB/Ingredients");
 const Products_1 = require("../../modelDB/Products");
 class ProductController {
-    static createIngredients(req, res) {
+    static getAll(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { nome } = req.body;
-                const input = {
-                    id: 1,
-                    nome,
-                };
-                const createEssence = yield IngredientsBussines_1.default.create(input);
-                res
-                    .status(201)
-                    .send({ message: "Cadastrado com sucesso", createEssence });
+                const { page } = req.query;
+                let limit = 10;
+                if (!page) {
+                    limit = 0;
+                }
+                let skip = limit * (Number(page) - 1);
+                const allProducts = yield Products_1.productDb.find().skip(skip).limit(limit);
+                res.status(200).send(allProducts);
             }
             catch (error) {
                 if (error instanceof BaseError_1.default) {
@@ -41,17 +40,46 @@ class ProductController {
             }
         });
     }
-    static create(req, res) {
+    static getById(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { nome } = req.body;
-                const input = {
-                    nome,
-                };
-                const createEssence = yield ProductBussines_1.default.create(input);
-                res
-                    .status(201)
-                    .send({ message: "Cadastrado com sucesso", createEssence });
+                const id = req.params.id;
+                const productId = yield Products_1.productDb.findOne({ _id: id });
+                if (!productId) {
+                    throw new BaseError_1.default("Produto não encontrado", 404);
+                }
+                const productRelative = yield Products_1.productDb.find({
+                    categoria_id: productId.categoria_id,
+                });
+                const ingredients = yield Ingredients_1.ingredientDb.find({
+                    id: productId.categoria_id,
+                });
+                const newProductId = Object.assign(Object.assign({}, productId._doc), { ingredients });
+                delete newProductId.ingredientes;
+                res.status(200).send({ newProductId, productRelative });
+            }
+            catch (error) {
+                if (error instanceof BaseError_1.default) {
+                    return res.status(error.statusCode).send({ message: error.message });
+                }
+                return res.status(500).send({ message: error.message });
+            }
+        });
+    }
+    static getByName(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { nome } = req.query;
+                if (!nome) {
+                    return res.status(200).send([]);
+                }
+                const products = yield Products_1.productDb.find({
+                    nome: { $regex: `^${nome}`, $options: "i" },
+                });
+                if (!products.length) {
+                    throw new BaseError_1.default(`Produto com nome ${nome} não encontrado`, 404);
+                }
+                res.status(200).send(products);
             }
             catch (error) {
                 if (error instanceof BaseError_1.default) {
@@ -93,17 +121,38 @@ class ProductController {
             }
         });
     }
-    static getAll(req, res) {
+    static createIngredients(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { page } = req.query;
-                let limit = 12;
-                if (!page) {
-                    limit = 0;
+                const { nome } = req.body;
+                const input = {
+                    id: 1,
+                    nome,
+                };
+                const createEssence = yield IngredientsBussines_1.default.create(input);
+                res
+                    .status(201)
+                    .send({ message: "Cadastrado com sucesso", createEssence });
+            }
+            catch (error) {
+                if (error instanceof BaseError_1.default) {
+                    return res.status(error.statusCode).send({ message: error.message });
                 }
-                let skip = limit * (Number(page) - 1);
-                const allProducts = yield Products_1.productDb.find().skip(skip).limit(limit);
-                res.send(allProducts);
+                return res.status(500).send({ message: error.message });
+            }
+        });
+    }
+    static create(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { nome } = req.body;
+                const input = {
+                    nome,
+                };
+                const createEssence = yield ProductBussines_1.default.create(input);
+                res
+                    .status(201)
+                    .send({ message: "Cadastrado com sucesso", createEssence });
             }
             catch (error) {
                 if (error instanceof BaseError_1.default) {
@@ -132,32 +181,6 @@ class ProductController {
             try {
                 const allEssences = yield Essence_1.essenceDb.find();
                 res.send(allEssences);
-            }
-            catch (error) {
-                if (error instanceof BaseError_1.default) {
-                    return res.status(error.statusCode).send({ message: error.message });
-                }
-                return res.status(500).send({ message: error.message });
-            }
-        });
-    }
-    static getById(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const id = req.params.id;
-                const productId = yield Products_1.productDb.findOne({ _id: id });
-                if (!productId) {
-                    throw new BaseError_1.default("Produto não encontrado", 404);
-                }
-                const productRelative = yield Products_1.productDb.find({
-                    categoria_id: productId.categoria_id,
-                });
-                const ingredients = yield Ingredients_1.ingredientDb.find({
-                    id: productId.categoria_id,
-                });
-                const newProductId = Object.assign(Object.assign({}, productId._doc), { ingredients });
-                delete newProductId.ingredientes;
-                res.status(200).send({ newProductId, productRelative });
             }
             catch (error) {
                 if (error instanceof BaseError_1.default) {

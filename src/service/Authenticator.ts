@@ -5,6 +5,8 @@ config();
 interface IPayload {
   id: string;
 }
+console.log("process",process.env.JWT_KEY);
+
 class Authenticator {
   public static generateToken(id: string): string {
     const token = jwt.sign({ id }, process.env.JWT_KEY!, {
