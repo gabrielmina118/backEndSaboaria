@@ -1,7 +1,5 @@
 # saboaria-Encantada-BackEnd
 
-# saboaria-Encantada-BackEnd
-
 Este projeto serve como back-end para funcionar em um site de vendas na área da beleza e cosméticos. Este servidor registra todas as solicitações de API.
 
 ## 🚀 Começando
