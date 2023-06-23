@@ -6,5 +6,5 @@ export const userRouter = Router()
 
 userRouter.post("/user/create" , UserController.createUser)
 userRouter.post("/user/login" , UserController.login)
-userRouter.get("/user/all",isAuthenticated,UserController.allUsers)
+userRouter.post("/user/cpf",isAuthenticated,UserController.insertCpf)
 userRouter.get("/user",isAuthenticated,UserController.getUserById)

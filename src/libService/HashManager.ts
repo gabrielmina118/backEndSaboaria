@@ -4,7 +4,7 @@ config();
 
 export class HashManager {
   public static async HashCreate(plainText: string): Promise<string> {
-    const rounds = Number(process.env.COST);
+    const rounds = 12;
     const salt = await bcrypt.genSalt(rounds);
     const hashPassword = await bcrypt.hash(plainText, salt);
     return hashPassword;

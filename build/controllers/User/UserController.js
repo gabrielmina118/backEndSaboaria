@@ -104,9 +104,9 @@ class UserController {
         return __awaiter(this, void 0, void 0, function* () {
             const { name, email, cpf, password } = req.body;
             const userInput = {
-                name,
+                name: "",
                 email,
-                cpf,
+                cpf: "",
                 password,
             };
             Object.keys(req.body).forEach(function (value) {
@@ -119,9 +119,7 @@ class UserController {
             let userMongoDB = new User_2.userDb(user);
             const outPutDTO = {
                 id: userMongoDB._id,
-                name: userMongoDB.name,
                 email: userMongoDB.email,
-                cpf: userMongoDB.cpf,
                 hasAdress: userMongoDB.hasAdress,
             };
             const token = Authenticator_1.default.generateToken(userMongoDB._id.toString());

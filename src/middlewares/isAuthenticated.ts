@@ -20,6 +20,6 @@ export default function isAuthenticated(
     };
     return next();
   } catch (error) {
-    throw new BaseError("Invalid JWT Token");
+    throw new BaseError("Invalid JWT Token", 404);
   }
 }

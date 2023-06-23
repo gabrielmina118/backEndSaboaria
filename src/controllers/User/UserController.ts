@@ -9,14 +9,40 @@ import { ICreateUser } from "./Interfaces/ICreateUser";
 import { IoutPutDTO } from "./Interfaces/IoutPutDTO";
 
 class UserController {
-  public static async allUsers(req: Request, res: Response) {
+  public static async insertCpf(req: Request, res: Response) {
     try {
-      const allUsers = await userDb.find();
-      res.status(200).send(allUsers);
-    } catch (error) {
-      if (error instanceof BaseError) {
-        res.status(error.statusCode).send({ message: error.message });
+      const id = req.user.id;
+      const { cpf } = req.body;
+
+      Object.keys(req.body).forEach(function (value) {
+        if (!req.body[value]) {
+          throw new BaseError(`O valor '${value}' esta faltando`, 404);
+        }
+      });
+      const userResult = await userDb.findOne({ _id: id });
+
+      if (!userResult) {
+        throw new BaseError("Usuário não encontrado ");
       }
+
+      const outPutDTO = {
+        name: userResult.name,
+        email: userResult.email,
+        cpf,
+      };
+
+      await userDb.findByIdAndUpdate(id, {
+        cpf,
+      });
+
+      res.status(201).send({
+        message: `CPF : ${cpf} , cadastrado com sucesso`,
+      });
+    } catch (error: any) {
+      if (error instanceof BaseError) {
+        return res.status(error.statusCode).send({ message: error.message });
+      }
+      return res.status(500).send({ error: error.message });
     }
   }
   public static async getUserById(req: Request, res: Response) {
@@ -25,26 +51,22 @@ class UserController {
 
       const adressResult = await adressDB.findOne({ id_user: id });
       const userResult = await userDb.findOne({ _id: id });
-      
+
       if (!userResult) {
         throw new BaseError("Usuário não encontrado ");
       }
 
-      if (!adressResult) {
-        throw new BaseError("Não há endereço cadastrado",404);
-      }
-
-      const outPutDTO:IoutPutDTO = {
+      const outPutDTO: IoutPutDTO = {
         name: userResult.name,
         email: userResult.email,
         cpf: userResult.cpf,
         adress: {
-          street: adressResult!.street ,
-          complement: adressResult!.complement,
-          neighbourhood: adressResult!.neighbourhood,
-          number: adressResult!.number,
-          city: adressResult!.city,
-          state: adressResult!.state,
+          street: adressResult?.street,
+          complement: adressResult?.complement,
+          neighbourhood: adressResult?.neighbourhood,
+          number: adressResult?.number,
+          city: adressResult?.city,
+          state: adressResult?.state,
         },
       };
 
@@ -83,7 +105,6 @@ class UserController {
 
       const outPutDTO = {
         id: emailAlreadExist._id,
-        name: emailAlreadExist.name,
         email: emailAlreadExist.email,
         cpf: emailAlreadExist.cpf,
         hasAdress: emailAlreadExist.hasAdress,
@@ -106,7 +127,7 @@ class UserController {
     const userInput: ICreateUser = {
       name,
       email,
-      cpf,
+      cpf: "",
       password,
     };
 
@@ -129,10 +150,8 @@ class UserController {
     let userMongoDB = new userDb(user);
 
     const outPutDTO = {
-      id: userMongoDB._id,
-      name: userMongoDB.name,
+      id: userMongoDB._id.toString(),
       email: userMongoDB.email,
-      cpf: userMongoDB.cpf,
       hasAdress: userMongoDB.hasAdress,
     };
     const token = Authenticator.generateToken(userMongoDB._id.toString());
