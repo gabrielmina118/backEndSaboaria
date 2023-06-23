@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import BaseError from "../error/BaseError";
-import Authenticator from "../service/Authenticator";
+import Authenticator from "../libService/Authenticator";
 
 export default function isAuthenticated(
   req: Request,
