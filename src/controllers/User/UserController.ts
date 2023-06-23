@@ -3,8 +3,8 @@ import BaseError from "../../error/BaseError";
 import User from "../../model/User";
 import { adressDB } from "../../modelDB/Adress";
 import { userDb } from "../../modelDB/User";
-import Authenticator from "../../service/Authenticator";
-import { HashManager } from "../../service/HashManager";
+import Authenticator from "../../libService/Authenticator";
+import { HashManager } from "../../libService/HashManager";
 import { ICreateUser } from "./Interfaces/ICreateUser";
 import { IoutPutDTO } from "./Interfaces/IoutPutDTO";
 
