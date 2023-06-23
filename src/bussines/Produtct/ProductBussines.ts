@@ -1,7 +1,7 @@
 import {
   IEssence,
   IEssenceDataBase,
-} from "../../controllers/product/interface/IEssence";
+} from "../../services/Essencie/interfaces/IEssence";
 import ProductData from "../../data/productData/ProductData";
 import BaseError from "../../error/BaseError";
 import { essenceDb } from "../../modelDB/Essence";

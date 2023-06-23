@@ -4,6 +4,8 @@ import { contactRouter } from "./contactRouter";
 import { productRouter } from "./productRouter";
 import { userRouter } from "./userRouter";
 import { ingredientsRouter } from "./dashBoardRouters/ingredientsRouter";
+import { categoriesRouter } from "./dashBoardRouters/categoriesRouter";
+import { essenciesRouter } from "./dashBoardRouters/essenciesRouter";
 
 const routes = (app: Express) => {
   app.use(
@@ -11,7 +13,9 @@ const routes = (app: Express) => {
     userRouter,
     adressRouter,
     contactRouter,
-    ingredientsRouter
+    ingredientsRouter,
+    categoriesRouter,
+    essenciesRouter
   );
 };
 export default routes;

@@ -6,6 +6,10 @@ class CategorieData {
     const categorieId = await categoryDb.findOne({ _id: id });
     return categorieId;
   }
+  public static async getAllCategories() {
+    const allCategories = await categoryDb.find();
+    return allCategories;
+  }
 }
 
 export default CategorieData;
