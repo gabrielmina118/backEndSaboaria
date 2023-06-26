@@ -10,7 +10,7 @@ export default function isAuthenticated(
   const authHeader = req.headers.authorization!;
 
   if (!authHeader) {
-    throw new BaseError("JWT TOKEN is missing", 404);
+    res.status(404).json({ message: "JWT TOKEN is missing" });
   }
 
   try {
@@ -19,7 +19,7 @@ export default function isAuthenticated(
       id: decode.id,
     };
     return next();
-  } catch (error) {
-    throw new BaseError("Invalid JWT Token", 404);
+  } catch (error:any) {
+    res.status(401).json({ message: error.message });
   }
 }

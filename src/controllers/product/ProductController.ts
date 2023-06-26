@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import ProductBussines from "../../bussines/Produtct/ProductBussines";
 import BaseError from "../../error/BaseError";
 import { categoryDb } from "../../modelDB/Category";
 import { essenceDb } from "../../modelDB/Essence";
@@ -56,8 +55,6 @@ class ProductController {
       return res.status(500).send({ message: error.message });
     }
   }
-
-  
 }
 
 export default ProductController;

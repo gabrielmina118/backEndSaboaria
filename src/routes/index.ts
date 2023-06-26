@@ -1,11 +1,11 @@
 import { Express } from "express";
-import { adressRouter } from "./adressRouter";
-import { contactRouter } from "./contactRouter";
-import { productRouter } from "./productRouter";
-import { userRouter } from "./userRouter";
+import { adressRouter } from "./browserRouters/adressRouter";
 import { ingredientsRouter } from "./dashBoardRouters/ingredientsRouter";
 import { categoriesRouter } from "./dashBoardRouters/categoriesRouter";
 import { essenciesRouter } from "./dashBoardRouters/essenciesRouter";
+import { productRouter } from "./browserRouters/productRouter";
+import { userRouter } from "./browserRouters/userRouter";
+import { contactRouter } from "./browserRouters/contactRouter";
 
 const routes = (app: Express) => {
   app.use(
