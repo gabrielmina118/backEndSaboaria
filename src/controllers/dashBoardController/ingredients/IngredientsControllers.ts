@@ -13,11 +13,9 @@ class IngredientesControllers {
         nome,
       };
 
-      const createEssence = await Create.create(input)
+      const createEssence = await Create.create(input);
 
-      res
-        .status(201)
-        .send({ message:createEssence });
+      res.status(201).send({ message: createEssence });
     } catch (error: any) {
       if (error instanceof BaseError) {
         return res.status(error.statusCode).send({ message: error.message });

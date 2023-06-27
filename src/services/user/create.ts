@@ -5,7 +5,7 @@ import Authenticator from "../../libService/Authenticator";
 import { HashManager } from "../../libService/HashManager";
 import User from "../../model/User";
 import { IOutPutCreateDTO } from "./interface/IOutPutCreateDTO";
-import InvalidValue from "./invalidValue";
+import InvalidValue from "../invalidValue";
 
 class CreateUser {
   public static async create(user: IInputCreateUserDTO) {

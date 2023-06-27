@@ -35,6 +35,13 @@ class UserData {
     const [emailAlreadExist] = await userDb.find({ email });
     return emailAlreadExist;
   }
+  public static async UpdateAdressByUser(id: string) {
+    const adress = await userDb.findByIdAndUpdate(id, {
+      hasAdress: true,
+    });
+
+    return adress
+  }
 }
 
 export default UserData;

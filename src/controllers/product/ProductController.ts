@@ -6,9 +6,9 @@ import { ingredientDb } from "../../modelDB/Ingredients";
 import { productDb } from "../../modelDB/Products";
 import { ICategories, Product } from "./interface/ICategories";
 import { IEssence } from "../../services/Essencie/interfaces/IEssence";
-import { GetAllService } from "../../services/product/getAll";
-import { GetByIdService } from "../../services/product/getById";
-import { GetByNameService } from "../../services/product/getByName";
+import { GetAllService } from "../../services/Product/getAll";
+import { GetByIdService } from "../../services/Product/getById";
+import { GetByNameService } from "../../services/Product/getByName";
 
 class ProductController {
   public static async getAll(req: Request, res: Response) {

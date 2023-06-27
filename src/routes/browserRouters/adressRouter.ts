@@ -4,5 +4,6 @@ import isAuthenticated from "../../middlewares/isAuthenticated";
 
 export const adressRouter = Router()
 
-adressRouter.post("/adress/create",isAuthenticated,AdressControler.create)
+adressRouter.post("/adress",isAuthenticated,AdressControler.create)
+adressRouter.get("/adress",isAuthenticated,AdressControler.get)
 

@@ -5,7 +5,7 @@ import Authenticator from "../../libService/Authenticator";
 import { HashManager } from "../../libService/HashManager";
 import { ILogin } from "./interface/ILogin";
 import { IoutputDTO } from "./interface/IOutPutDTO";
-import InvalidValue from "./invalidValue";
+import InvalidValue from "../invalidValue";
 
 class Login {
   public static async Login(body: InputDTO): Promise<ILogin> {
