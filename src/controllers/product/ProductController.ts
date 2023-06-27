@@ -1,14 +1,8 @@
 import { Request, Response } from "express";
 import BaseError from "../../error/BaseError";
-import { categoryDb } from "../../modelDB/Category";
-import { essenceDb } from "../../modelDB/Essence";
-import { ingredientDb } from "../../modelDB/Ingredients";
-import { productDb } from "../../modelDB/Products";
-import { ICategories, Product } from "./interface/ICategories";
-import { IEssence } from "../../services/Essencie/interfaces/IEssence";
-import { GetAllService } from "../../services/Product/getAll";
-import { GetByIdService } from "../../services/Product/getById";
-import { GetByNameService } from "../../services/Product/getByName";
+import { GetAllService } from "../../services/product/getAll";
+import { GetByIdService } from "../../services/product/getById";
+import { GetByNameService } from "../../services/product/getByName";
 
 class ProductController {
   public static async getAll(req: Request, res: Response) {
