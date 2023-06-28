@@ -23,7 +23,6 @@ class UserController {
 
       res.status(201).send({
         message: `CPF : ${updateCpf.cpf} , cadastrado com sucesso`,
-        updateCpf,
       });
     } catch (error: any) {
       if (error instanceof BaseError) {

@@ -9,7 +9,7 @@ class GetUserById {
     const userResult = await UserData.getById(id);
 
     if (!userResult) {
-      throw new BaseError("Usuário não encontrado ");
+      throw new BaseError("Usuário não encontrado",404);
     }
 
     const outPutDTO: IoutPutDTO = {

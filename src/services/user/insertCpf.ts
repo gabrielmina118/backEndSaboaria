@@ -7,17 +7,9 @@ class InsertCPF {
       throw new BaseError("CPF deve ser enviado", 404);
     }
 
-    const userResult = await UserData.getById(id);
-
-    if (!userResult) {
-      throw new BaseError("Usuário não encontrado", 404);
-    }
-
     await UserData.findAndUpdateByCPF(id, cpf);
 
     const outPutDTO: outPutDTO = {
-      name: userResult.name!,
-      email: userResult.email!,
       cpf,
     };
 
