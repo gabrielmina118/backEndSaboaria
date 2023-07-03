@@ -24,8 +24,7 @@ class ProductData {
     const productIngredients = await ingredientDb.find({
       id: categoriaId,
     });
-    console.log("Ingredientes dos produtos", productIngredients);
-
+ 
     return productIngredients;
   }
   public static async getProductByName(nome: string) {
