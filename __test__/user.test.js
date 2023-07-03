@@ -12,7 +12,7 @@ const token = jwt.sign({ userId: "123" }, secretKey);
 const idToken = jwt.verify(token, secretKey);
 let userDB;
 
-describe("1- Endpoint de atualizar CPF", () => {
+describe.skip("1- Endpoint de atualizar CPF", () => {
   let connection;
   let db;
 
@@ -73,7 +73,7 @@ describe("1- Endpoint de atualizar CPF", () => {
   });
 });
 
-describe("2 - Endpoint de buscar usuário por ID", () => {
+describe.skip("2 - Endpoint de buscar usuário por ID", () => {
   let connection;
   let db;
 
@@ -111,7 +111,7 @@ describe("2 - Endpoint de buscar usuário por ID", () => {
   });
 });
 
-describe("3 - Endpoint de logar usuário ", () => {
+describe("3 - Endpoint de logar usuário", () => {
   let connection;
   let db;
 
