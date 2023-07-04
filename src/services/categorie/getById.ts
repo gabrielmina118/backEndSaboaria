@@ -1,9 +1,16 @@
-import ProductData from "../../data/productData/ProductData";
+import CategorieData from "../../data/categorieData/CategorieData";
 import BaseError from "../../error/BaseError";
-
-export class GetByIdService {
+class GetByIdService {
   static async getById(id: string) {
-    
+    const response = await CategorieData.getCategorieById(id);
+
+    if (!response) {
+      throw new BaseError(`Não é possível achar categoria com id ${id}`,404);
+    }
+
+    return response;
    
   }
 }
+
+export default GetByIdService
