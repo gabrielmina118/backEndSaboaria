@@ -6,7 +6,7 @@ class DeleteEssence {
     const response = await EssencieData.deleteEssence(id);
 
     if (!response) {
-      throw new BaseError(`Erro ao deletar a essência com id:${id}`);
+      throw new BaseError(`Erro ao deletar a essência com id:${id}`,404);
     }
 
     return response ? `Essência com id :${id} deletada com sucesso` : "";

@@ -11,7 +11,7 @@ class EssencieData {
         return { message: "Cadastrado com sucesso" };
       }
     });
-    return response;
+    return essence;
   }
 
   private static async deleteByIdMongoDB(id: string) {

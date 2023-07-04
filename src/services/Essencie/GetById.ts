@@ -6,7 +6,7 @@ class GetById {
     const response = await EssencieData.getEssenceById(id);
 
     if (!response) {
-      throw new BaseError(`Não é possível achar essência com id ${id}`);
+      throw new BaseError(`Não é possível achar essência com id ${id}`,404);
     }
 
     return response;

@@ -3,6 +3,7 @@ import { IEssence } from "./interfaces/IEssence";
 
 class UpdateEssence {
   public static async update(id: string, input: IEssence) {
+    
     if (!input.nome) {
       throw new Error("Essencia não informada");
     }

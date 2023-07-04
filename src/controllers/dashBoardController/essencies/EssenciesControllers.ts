@@ -32,7 +32,7 @@ class EssenciesControllers {
   public static async allEssences(req: Request, res: Response) {
     try {
       const allEssences = await AllEssencies.allEssencie();
-      res.send(allEssences);
+      res.status(200).send(allEssences);
     } catch (error: any) {
       if (error instanceof BaseError) {
         return res.status(error.statusCode).send({ message: error.message });
