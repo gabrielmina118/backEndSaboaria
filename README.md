@@ -1,11 +1,15 @@
 # saboaria-Encantada-BackEnd
 
-Este projeto serve como back-end para funcionar em um site de vendas na área da beleza e cosméticos. Este servidor registra todas as solicitações de API.
+Este projeto serve como back-end para funcionar em um site de vendas na área da beleza e cosméticos. Este servidor registra todas as solicitações de API do site e do dashboard.
+
+## Em construção :construction:
+Esta api está em construção.
 
 ## 🚀 Começando
 
-É possivel ler mais sobre a API [aqui](https://documenter.getpostman.com/view/24008527/2s93CPpXSw)
+É possivel ler mais sobre a API do Site [aqui](https://documenter.getpostman.com/view/24008527/2s93CPpXSw)
 
+É possivel ler mais sobre a API do Dashboard [aqui](https://documenter.getpostman.com/view/24008527/2s93zE2zqu)
 ### 🔧 Instalação
 
 É necessário antes de instalar este projeto , ter instalado e rodando o banco de dados mongoDB
