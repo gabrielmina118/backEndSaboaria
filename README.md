@@ -35,7 +35,6 @@ Para executar os testes , rode o comando:
 * Node
 * typescript
 * MongoDb
-* Node
 
 ## ✒️ Autor
 
