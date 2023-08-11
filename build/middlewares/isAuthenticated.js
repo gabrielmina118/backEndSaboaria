@@ -3,12 +3,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const BaseError_1 = __importDefault(require("../error/BaseError"));
-const Authenticator_1 = __importDefault(require("../service/Authenticator"));
+const Authenticator_1 = __importDefault(require("../libService/Authenticator"));
 function isAuthenticated(req, res, next) {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
-        throw new BaseError_1.default("JWT TOKEN is missing", 404);
+        res.status(404).json({ message: "JWT TOKEN is missing" });
     }
     try {
         const decode = Authenticator_1.default.getToken(authHeader);
@@ -18,7 +17,8 @@ function isAuthenticated(req, res, next) {
         return next();
     }
     catch (error) {
-        throw new BaseError_1.default("Invalid JWT Token");
+        res.status(401).json({ message: error.message });
     }
 }
 exports.default = isAuthenticated;
+//# sourceMappingURL=isAuthenticated.js.map

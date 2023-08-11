@@ -17,3 +17,4 @@ const productSchema = new mongoose_1.default.Schema({
     categoria_id: { type: String },
 });
 exports.productDb = mongoose_1.default.model("products", productSchema);
+//# sourceMappingURL=Products.js.map

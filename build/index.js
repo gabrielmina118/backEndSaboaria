@@ -20,3 +20,4 @@ exports.app.use((0, cors_1.default)());
 exports.app.listen(port, () => {
     console.log(`Server is running in port ${port}`);
 });
+//# sourceMappingURL=index.js.map

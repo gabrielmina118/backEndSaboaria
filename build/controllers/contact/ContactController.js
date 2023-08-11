@@ -13,33 +13,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const BaseError_1 = __importDefault(require("../../error/BaseError"));
-const Contact_1 = require("../../modelDB/Contact");
+const create_1 = __importDefault(require("../../services/Contact/create"));
 class ContactController {
     static create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { name, email, text } = req.body;
-                Object.keys(req.body).forEach(function (value) {
-                    if (!req.body[value]) {
-                        throw new BaseError_1.default(`O valor de '${value}' esta faltando`, 404);
-                    }
-                });
                 const inputDTO = {
                     nome: name,
                     email,
                     texto: text,
                 };
-                let contactMongoDb = new Contact_1.contactDb(inputDTO);
-                contactMongoDb.save((err) => {
-                    if (err) {
-                        res.status(500).send({ message: err.message });
-                    }
-                    else {
-                        res.status(201).send({
-                            message: `Mensagem enviada com sucesso , enviaremos um email em até 24hr para '${email}'`,
-                        });
-                    }
-                });
+                const message = yield create_1.default.create(inputDTO);
+                res.status(201).send({ message });
             }
             catch (error) {
                 if (error instanceof BaseError_1.default) {
@@ -51,3 +37,4 @@ class ContactController {
     }
 }
 exports.default = ContactController;
+//# sourceMappingURL=ContactController.js.map

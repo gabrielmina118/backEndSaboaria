@@ -7,3 +7,4 @@ class BaseError {
     }
 }
 exports.default = BaseError;
+//# sourceMappingURL=BaseError.js.map

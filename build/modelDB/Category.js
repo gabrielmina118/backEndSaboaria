@@ -10,3 +10,4 @@ const categorySchema = new mongoose_1.default.Schema({
     nome: { type: String },
 });
 exports.categoryDb = mongoose_1.default.model("category", categorySchema);
+//# sourceMappingURL=Category.js.map

@@ -12,3 +12,4 @@ const contactSchema = new mongoose_1.default.Schema({
     texto: { type: String },
 });
 exports.contactDb = mongoose_1.default.model("contacts", contactSchema);
+//# sourceMappingURL=Contact.js.map

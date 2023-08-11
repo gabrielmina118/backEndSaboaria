@@ -14,3 +14,4 @@ const userSchema = new mongoose_1.default.Schema({
     hasAdress: { type: Boolean }
 });
 exports.userDb = mongoose_1.default.model("users", userSchema);
+//# sourceMappingURL=User.js.map

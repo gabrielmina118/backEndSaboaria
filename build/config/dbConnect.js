@@ -12,3 +12,4 @@ if (process.env.DB_MONGO_CONFIG) {
     mongoose_1.default.connect(process.env.DB_MONGO_CONFIG);
 }
 exports.connectionDB = mongoose_1.default.connection;
+//# sourceMappingURL=dbConnect.js.map

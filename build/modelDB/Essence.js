@@ -10,3 +10,4 @@ const essenceSchema = new mongoose_1.default.Schema({
     nome: { type: String },
 });
 exports.essenceDb = mongoose_1.default.model("essences", essenceSchema);
+//# sourceMappingURL=Essence.js.map

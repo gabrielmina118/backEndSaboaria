@@ -13,22 +13,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const BaseError_1 = __importDefault(require("../../error/BaseError"));
-const User_1 = __importDefault(require("../../model/User"));
-const Adress_1 = require("../../modelDB/Adress");
-const User_2 = require("../../modelDB/User");
-const Authenticator_1 = __importDefault(require("../../service/Authenticator"));
-const HashManager_1 = require("../../service/HashManager");
+const insertCpf_1 = __importDefault(require("../../services/user/insertCpf"));
+const getUserById_1 = __importDefault(require("../../services/user/getUserById"));
+const login_1 = __importDefault(require("../../services/user/login"));
+const create_1 = __importDefault(require("../../services/user/create"));
 class UserController {
-    static allUsers(req, res) {
+    static insertCpf(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const allUsers = yield User_2.userDb.find();
-                res.status(200).send(allUsers);
+                const id = req.user.id;
+                const { cpf } = req.body;
+                const updateCpf = yield insertCpf_1.default.insertCpf(id, cpf);
+                res.status(201).send({
+                    message: `CPF : ${updateCpf.cpf} , cadastrado com sucesso`,
+                });
             }
             catch (error) {
                 if (error instanceof BaseError_1.default) {
-                    res.status(error.statusCode).send({ message: error.message });
+                    return res.status(error.statusCode).send({ message: error.message });
                 }
+                return res.status(500).send({ message: error.message });
             }
         });
     }
@@ -36,33 +40,14 @@ class UserController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const id = req.user.id;
-                const adressResult = yield Adress_1.adressDB.findOne({ id_user: id });
-                const userResult = yield User_2.userDb.findOne({ _id: id });
-                if (!userResult) {
-                    throw new BaseError_1.default("Usuário não encontrado ");
-                }
-                if (!adressResult) {
-                    throw new BaseError_1.default("Não há endereço cadastrado", 404);
-                }
-                const outPutDTO = {
-                    name: userResult.name,
-                    email: userResult.email,
-                    cpf: userResult.cpf,
-                    adress: {
-                        street: adressResult.street,
-                        complement: adressResult.complement,
-                        neighbourhood: adressResult.neighbourhood,
-                        number: adressResult.number,
-                        city: adressResult.city,
-                        state: adressResult.state,
-                    },
-                };
+                const outPutDTO = yield getUserById_1.default.getUserById(id);
                 res.status(200).send(outPutDTO);
             }
             catch (error) {
                 if (error instanceof BaseError_1.default) {
-                    res.status(error.statusCode).send({ message: error.message });
+                    return res.status(error.statusCode).send({ message: error.message });
                 }
+                return res.status(500).send({ message: error.message });
             }
         });
     }
@@ -70,72 +55,42 @@ class UserController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { email, password } = req.body;
-                Object.keys(req.body).forEach(function (value) {
-                    if (!req.body[value]) {
-                        throw new BaseError_1.default(`A propriedade '${value}' esta faltando`, 404);
-                    }
-                });
-                const [emailAlreadExist] = yield User_2.userDb.find({ email });
-                if (!emailAlreadExist) {
-                    throw new BaseError_1.default(`Email ${email} não cadastrado`, 404);
-                }
-                const verifyPassword = yield HashManager_1.HashManager.comparePassword(password, emailAlreadExist.password);
-                if (!verifyPassword) {
-                    throw new BaseError_1.default(`senha incorreta`, 401);
-                }
-                const outPutDTO = {
-                    id: emailAlreadExist._id,
-                    name: emailAlreadExist.name,
-                    email: emailAlreadExist.email,
-                    cpf: emailAlreadExist.cpf,
-                    hasAdress: emailAlreadExist.hasAdress,
+                const inputDTO = {
+                    email,
+                    password,
                 };
-                const token = Authenticator_1.default.generateToken(emailAlreadExist._id.toString());
-                res.status(200).send({ user: outPutDTO, token });
+                const outPutDTO = yield login_1.default.Login(inputDTO);
+                res.status(200).send(outPutDTO);
             }
             catch (error) {
                 if (error instanceof BaseError_1.default) {
-                    res.status(error.statusCode).send({ message: error.message });
+                    return res.status(error.statusCode).send({ message: error.message });
                 }
+                return res.status(500).send({ message: error.message });
             }
         });
     }
     static createUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { name, email, cpf, password } = req.body;
-            const userInput = {
-                name: "",
-                email,
-                cpf: "",
-                password,
-            };
-            Object.keys(req.body).forEach(function (value) {
-                if (!req.body[value]) {
-                    throw new BaseError_1.default(`A propriedade '${value}' esta faltando`, 404);
+            try {
+                const { name, email, cpf, password } = req.body;
+                const userInput = {
+                    name,
+                    email,
+                    cpf,
+                    password,
+                };
+                const userCreate = yield create_1.default.create(userInput);
+                res.status(201).send(userCreate);
+            }
+            catch (error) {
+                if (error instanceof BaseError_1.default) {
+                    return res.status(error.statusCode).send({ message: error.message });
                 }
-            });
-            const hashPassword = yield HashManager_1.HashManager.HashCreate(userInput.password);
-            const user = new User_1.default(userInput.name, userInput.email, userInput.cpf, hashPassword);
-            let userMongoDB = new User_2.userDb(user);
-            const outPutDTO = {
-                id: userMongoDB._id,
-                email: userMongoDB.email,
-                hasAdress: userMongoDB.hasAdress,
-            };
-            const token = Authenticator_1.default.generateToken(userMongoDB._id.toString());
-            userMongoDB.save((err) => {
-                if (err) {
-                    res.status(500).send({ message: err.message });
-                }
-                else {
-                    res.status(201).send({
-                        message: "Usuário cadastrado com sucesso !",
-                        user: outPutDTO,
-                        token,
-                    });
-                }
-            });
+                return res.status(500).send({ message: error.message });
+            }
         });
     }
 }
 exports.default = UserController;
+//# sourceMappingURL=UserController.js.map

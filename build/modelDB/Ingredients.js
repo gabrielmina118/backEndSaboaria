@@ -10,3 +10,4 @@ const ingredientsSchema = new mongoose_1.default.Schema({
     nome: { type: String },
 });
 exports.ingredientDb = mongoose_1.default.model("ingredients", ingredientsSchema);
+//# sourceMappingURL=Ingredients.js.map

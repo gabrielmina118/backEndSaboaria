@@ -15,3 +15,4 @@ const adressSchema = new mongoose_1.default.Schema({
     state: { type: String },
 });
 exports.adressDB = mongoose_1.default.model("adress", adressSchema);
+//# sourceMappingURL=Adress.js.map
