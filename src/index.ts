@@ -3,7 +3,7 @@ import cors from "cors";
 import routes from "./routes";
 import { connectionDB } from "./config/dbConnect";
 
-// Abrir conexão com o banco
+
 connectionDB.on("Error", console.log.bind(console, "Error na conexão"));
 connectionDB.once("open", () => {
   console.log("Conexão com o banco realizada com sucesso");
